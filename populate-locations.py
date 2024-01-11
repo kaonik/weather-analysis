@@ -1,4 +1,5 @@
 import psycopg2
+import psycopg2.extras
 import os
 
 def create_location_points(lat_start=24,lat_end=50,long_start=-125,long_end=-67, step=1.0):
@@ -15,6 +16,27 @@ def bulk_insert_locations(db_conn_params,locations):
     '''
     Bulk insert locations into database.
     '''
+    conn = psycopg2.connect(**db_conn_params)
+    cursor = conn.cursor()
+
+    try:
+        #Use execute_values for bulk insert
+        psycopg2.extras.execute_values(
+            cursor,
+            "INSERT INTO Location (Latitude, Longitude) VALUES %s;",
+            locations,
+            template=None,
+            page_size=100
+        )
+        conn.commit()
+        print('Locations successfully inserted.')
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(f'Error: {error}')
+        conn.rollback()
+    finally:
+        cursor.close()
+        conn.close()
+
 
 db_conn_params = {
     "dbname": os.getenv('DB_NAME'),
@@ -22,3 +44,7 @@ db_conn_params = {
     "password": os.getenv('DB_PASSWORD'),
     "host": os.getenv('DB_HOST')
 }
+
+if __name__ == "__main__":
+    locations = create_location_points()
+    bulk_insert_locations(db_conn_params,locations)
