@@ -1,0 +1,41 @@
+create table WeatherConditionTypes (
+	WeatherConditionID int primary key,
+	Main varchar(50),
+	Description varchar(50)
+);
+
+create table Location (
+	LocationID serial primary key,
+	Latitude float,
+	Longitude float
+);
+
+create table Forecast (
+	ForecastID serial primary key,
+	LocationID int references Location(LocationID),
+	WeatherConditionID int references WeatherConditionTypes(WeatherConditionID),
+	Temperature float,
+	Pressure int,
+	SeaLevelPressure int,
+	GroundLevelPressure int,
+	Humidity int,
+	Cloudiness int,
+	WindSpeed float,
+	WindDirection int,
+	WindGust float,
+	Visibility int,
+	PrecipitationChance float,
+	TimestampISO timestamp
+);
+
+create table Rain (
+	RainID serial primary key,
+	ForecastID int references Forecast(ForecastID),
+	Volume3h float
+);
+
+create table Snow (
+	SnowID serial primary key,
+	ForecastID int references Forecast(ForecastID),
+	Volume3h float
+);
