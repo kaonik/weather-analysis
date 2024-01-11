@@ -1,3 +1,9 @@
+DROP TABLE IF EXISTS Rain CASCADE;
+DROP TABLE IF EXISTS Snow CASCADE;
+DROP TABLE IF EXISTS Forecast CASCADE;
+DROP TABLE IF EXISTS Location CASCADE;
+DROP TABLE IF EXISTS WeatherConditionTypes CASCADE;
+
 create table WeatherConditionTypes (
 	WeatherConditionID int primary key,
 	Main varchar(50),
