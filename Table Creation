@@ -25,7 +25,8 @@ create table Forecast (
 	WindGust float,
 	Visibility int,
 	PrecipitationChance float,
-	TimestampISO timestamp
+	TimestampISO timestamp,
+	constraint unique_location_timestamp unique (LocationID, TimestampISO)
 );
 
 create table Rain (
