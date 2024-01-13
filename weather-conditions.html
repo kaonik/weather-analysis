@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+        <!-- smart banner apple -->
+        <meta name="apple-itunes-app" content="app-id=1535923697">
+        <script data-ad-client="ca-pub-6837309406068967" async="" src="Weather%20Conditions%20-%20OpenWeatherMap_files/googlesyndication_adsbygoogle.js"></script>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">    
+    <meta http-equiv="Expires" content="Tue, Sep 20 2018 15:27:22 GMT">
+    <meta http-equiv="Last-Modified" content="Tue, Sep 20 2018 15:27:22 GMT">
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="weather, world, Openstreetmap, forecast, Openweather, current">
+    <meta name="description" content="">
+    <meta name="author" content="OpenWeatherMap.org">
+    <meta name="domain" content="OpenWeatherMap.org">        
+    <meta name="p:domain_verify" content="34fe229eab8562dca90f4a5962ff80a9">
+    <meta property="title" content="Weather Conditions">                <link rel="shortcut icon" href="https://openweathermap.org/themes/openweathermap/assets/vendor/owm/img/icons/favicon.ico">
+<link rel="icon" href="https://openweathermap.org/themes/openweathermap/assets/vendor/owm/img/icons/logo_16x16.png" sizes="16x16" type="image/png">
+<link rel="icon" href="https://openweathermap.org/themes/openweathermap/assets/vendor/owm/img/icons/logo_32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="https://openweathermap.org/themes/openweathermap/assets/vendor/owm/img/icons/logo_60x60.png" sizes="60x60" type="image/png">   
+        <title>Weather Conditions - OpenWeatherMap</title>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async="" src="Weather%20Conditions%20-%20OpenWeatherMap_files/google-analytics_analytics.js"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-31601618-1');
+</script>        
+        <script src="Weather%20Conditions%20-%20OpenWeatherMap_files/jquery-1.9.1.min.js" integrity="sha256-wS9gmOZBqsqWxgIVgA8Y9WcQOa7PgSIX+rPA0VL2rbQ=" crossorigin="anonymous"></script>
+<script src="Weather%20Conditions%20-%20OpenWeatherMap_files/polyfill.min.js"></script>
+<script src="Weather%20Conditions%20-%20OpenWeatherMap_files/bundle_owm_preload.c31872127471c475ade1.js"></script>            
+        <link href="Weather%20Conditions%20-%20OpenWeatherMap_files/bundle_owm_styles.c31872127471c475ade1.css" rel="stylesheet"> 
+<link href="Weather%20Conditions%20-%20OpenWeatherMap_files/stick_footer_panel.c31872127471c475ade1.css" rel="stylesheet">
+<!-- Resources -->
+<!--link href='/themes/openweathermap/assets/vendor/mosaic/fonts/font-awesome/css/font-awesome.min.css' rel="stylesheet"-->            
+<link href="Weather%20Conditions%20-%20OpenWeatherMap_files/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link href="Weather%20Conditions%20-%20OpenWeatherMap_files/css_002.css" rel="stylesheet">
+<link href="Weather%20Conditions%20-%20OpenWeatherMap_files/css.css" rel="stylesheet">        <link href="Weather%20Conditions%20-%20OpenWeatherMap_files/new_owm_styles.635b0c2ecd513644.css" rel="stylesheet"> 
+
+<!-- Resources -->
+<!--link href='/themes/openweathermap/assets/vendor/mosaic/fonts/font-awesome/css/font-awesome.min.css' rel="stylesheet"-->            
+<link href="Weather%20Conditions%20-%20OpenWeatherMap_files/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link href="Weather%20Conditions%20-%20OpenWeatherMap_files/css_002.css" rel="stylesheet">
+<link href="Weather%20Conditions%20-%20OpenWeatherMap_files/css.css" rel="stylesheet">    
+        
+    </head>
+    <body class="body-orange" onclick="closePopUps()">
+                    <style>
+    .banner_stripe {
+        width: 100%; 
+        height: 80px; 
+        background-color: #1c1c1e;
+        display: none;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px;
+        font-family: Roboto,sans-serif;
+        position: relative;
+        z-index: 5;
+    }
+    .banner_container {
+        display: flex; 
+        flex-direction: row; 
+        align-items: center; 
+        margin-left: 18px;
+        }
+    .banner_icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 15px;
+        background-size: 64px 64px;
+        margin: 8px;
+    }
+    .google_button {
+        /* background-color: #3e83f8; */
+        background-color: #2196f3;
+        height: 36px;
+        border: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,.26);
+        box-sizing: border-box;
+        color: #fff !important;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: .5px;
+        line-height: 24px;
+        margin: 6px;
+        min-width: 40px;
+        outline: 0;
+        padding: 10px 14px;
+        position: relative;
+        text-align: center;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: box-shadow .4s cubic-bezier(.25,.8,.25,1),background-color .4s cubic-bezier(.25,.8,.25,1);
+        white-space: nowrap;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    .google_button:hover, .google_button:focus {
+        text-decoration: none;
+    }
+    .smartbanner__exit {
+        position: absolute;
+        top: calc(50% - 6px);
+        left: 12px;
+        display: block;
+        margin: 0;
+        width: 12px;
+        height: 12px;
+        border: 0;
+        text-align: center; 
+        }
+    .smartbanner__exit::before, .smartbanner__exit::after {
+      position: absolute;
+      width: 1px;
+      height: 12px;
+      content: ' ';
+      background: #767676;
+      }
+    .smartbanner__exit::before {
+      transform: rotate(45deg); }
+    .smartbanner__exit::after {
+      transform: rotate(-45deg); }
+    .smartbanner-text {
+        font-size: 12px; 
+        margin: 0; 
+        color: #96969c;
+     }
+</style>
+
+<div id="banner_android" class="banner_stripe">
+    <div class="banner_container">
+        <a class="smartbanner__exit" onclick="bannerClose()"></a>
+        <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/android-app-top-banner.png" class="banner_icon">
+        <div>
+            <p class="smartbanner-text" style="color: #ffffff;">OpenWeather</p>
+            <p class="smartbanner-text">OpenWeather Ltd.</p>
+            <p class="smartbanner-text">GET - on Google Play</p>
+        </div>
+    </div>
+    <a class="google_button" style="font-size: 16px;" href="https://play.google.com/store/apps/details?id=uk.co.openweather" onclick="ga('send', 'event', 'app', 'click', 'androidTopBanner');">VIEW</a>
+</div>
+
+<script>
+    
+    var bannerClosed = "owm_banner_android_closed"
+    
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+    
+    function setCookie (name, value) {
+        var expires = new Date()
+        expires.setTime(expires.getTime() + (5 * 1000 * 60 * 60 * 24))
+        document.cookie = name + '=' + escape(value) + '; expires=' + expires.toGMTString() + '; path=/'
+      }
+      
+    function bannerClose() {
+        document.getElementById("banner_android").style.display = "none";
+        setCookie(bannerClosed, true)
+    }
+    
+    document.onload = function(bannerClosed) {
+       if ((document.cookie.indexOf() === -1)  && /Android/i.test(window.navigator.userAgent)) {
+           document.getElementById("banner_android").style.display = 'flex';
+        } 
+    }()
+    
+    
+</script>   
+                <nav id="nav-website" onclick="toggleMenu(event)">
+  <ul id="first-level-nav">
+    <li class="logo">
+      <a href="https://openweathermap.org/">
+        <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/logo_white_cropped.png">
+      </a>
+    </li>
+    <li id="hamburger">
+      <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/icon_hamburger.svg">
+    </li>
+    <div id="desktop-menu">
+    <form role="search" action="/find" method="get">
+      <input type="text" name="q" placeholder="Weather in your city">
+      <input type="submit" style="display:none;">
+    </form>
+    <ul>
+      <li>
+        <a href="https://openweathermap.org/guide" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'weather']);">Guide</a>
+      </li>
+      <li>
+        <a href="https://openweathermap.org/api" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'api']);">API</a>
+      </li>
+        <li>
+        <a href="https://openweathermap.org/weather-dashboard" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'dashboard']);">Dashboard</a>
+      </li>
+      <li>
+        <a href="https://home.openweathermap.org/marketplace" target="_blank" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'dashboard']);">Marketplace</a>
+      </li>
+      <li>
+        <a href="https://openweathermap.org/price" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'price']);">Pricing</a>
+      </li>
+      <li>
+        <a href="https://openweathermap.org/weathermap" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'weather']);">Maps</a>
+      </li>
+      <li>
+        <a href="https://openweathermap.org/our-initiatives" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'weather']);">Our Initiatives</a>
+      </li>
+      <li>
+        <a href="https://openweathermap.org/examples" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'examples']);">Partners</a>
+      </li>
+      <li>
+        <a href="https://openweather.co.uk/blog/category/weather" target="_blank" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'news']);">Blog</a>
+      </li>
+      <li>
+        <a href="https://openweather.co.uk/" class="marketplace" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'marketplace']);" target="_blank">For Business</a>
+      </li>
+              <li class="with-dropdown user-li">
+          <div id="user-dropdown">
+            <div class="inner-user-container">kaonik</div>
+          </div>
+          <ul class="dropdown-menu" id="user-dropdown-menu">
+            <li><a href="https://home.openweathermap.org/myservices">My services</a></li>
+            <li><a href="https://home.openweathermap.org/api_keys">My API keys</a></li>
+            <li><a href="https://home.openweathermap.org/payments">My payments</a></li>
+            <li><a href="https://home.openweathermap.org/home">My profile</a></li>
+            <li><a href="https://home.openweathermap.org/users/logout">Logout</a></li>
+          </ul>
+        </li>
+              <li class="with-dropdown">
+          <div id="support-dropdown">Support</div>
+          <ul class="dropdown-menu" id="support-dropdown-menu">
+            <li><a href="https://openweathermap.org/faq">FAQ</a></li>
+            <li><a href="https://openweathermap.org/appid">How to start</a></li>
+            <li><a href="https://home.openweathermap.org/questions" target="_blank">Ask a question</a></li>
+          </ul>
+        </li>
+      </ul>
+  </div>
+  </ul>
+  <ul id="mobile-menu">
+    <li>
+      <form role="search" action="/find" method="get">
+        <input type="text" name="q" placeholder="Weather in your city">
+        <input type="submit" style="display:none;">
+      </form>
+    </li>
+    <li>
+      <a href="https://openweathermap.org/guide" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'weather']);">Guide</a>
+    </li>
+    <li>
+      <a href="https://openweathermap.org/api" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'api']);">API</a>
+    </li>
+    <li>
+        <a href="https://openweathermap.org/weather-dashboard" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'dashboard']);">Dashboard</a>
+      </li>
+      <li>
+        <a href="https://home.openweathermap.org/marketplace" target="_blank" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'dashboard']);">Marketplace</a>
+      </li>
+    <li>
+      <a href="https://openweathermap.org/price" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'price']);">Pricing</a>
+    </li>
+    <li>
+      <a href="https://openweathermap.org/weathermap" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'weather']);">Maps</a>
+    </li>
+    <li>
+      <a href="https://openweathermap.org/our-initiatives" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'weather']);">Our Initiatives</a>
+    </li>
+    <li>
+      <a href="https://openweathermap.org/examples" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'examples']);">Partners</a>
+    </li>
+    <li>
+      <a href="https://openweather.co.uk/blog/category/weather" target="_blank" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'news']);">Blog</a>
+    </li>
+    <li>
+        <a href="https://openweather.co.uk/" class="marketplace" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'marketplace']);" target="_blank">For Business</a>
+      </li>
+    <li>
+      <a href="https://home.openweathermap.org/questions">Ask a question</a>
+    </li>
+          <li class="user"><a href="https://home.openweathermap.org/">kaonik</a></li>
+      <li><a href="https://home.openweathermap.org/users/logout">Logout</a></li>
+      </ul>
+</nav>
+<div style="height: 48pt; width: 100%; visibility: hidden;"></div> 
+        <div id="notes_block"></div>
+        <main class="wrapper"> 
+                            <div class="topic">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-7">
+                                    <h1 class="breadcrumb-title">Weather Conditions</h1>
+                            </div>
+            <div class="col-sm-5">
+                <ol class="breadcrumb pull-right hidden-xs">
+                    <li><a href="https://openweathermap.org/">Home</a></li>
+                                                            
+                                                                        <li class="breadcrumb__leaf">Weather Conditions</li>
+                                                            </ol>
+            </div>
+        </div>
+    </div>   
+</div>       
+                                    <div class="container">
+<div class="row">
+<div class="col-sm-8">
+
+    <h2 class="headline first-child text-color">
+        Weather icons
+    </h2>
+
+<h3> Example of API response<a href="#Example" class="wiki-anchor"></a></h3>
+
+
+	<p><a class="external" href="https://samples.openweathermap.org/data/2.5/weather?q=London&amp;appid=b1b15e88fa797225412429c1c50c122a1">https://api.openweathermap.org/data/2.5/weather?q=London</a></p>
+
+
+<pre>    ...
+    "weather": [
+        {
+            "id": 500,
+            "main": "Rain",
+            "description": "light rain",
+            "icon": "10n"
+        }
+    ],
+    ...
+</pre>
+
+<p>NOTE: It is possible to meet more than one weather condition for a 
+requested location. The first weather condition in API respond is 
+primary. <a href="http://samples.openweathermap.org/data/2.5/find?q=London&amp;appid=b1b15e88fa797225412429c1c50c122a1r">An example</a></p><p>
+	<a id="How-to-get-icon-URL"></a>
+</p><h3>How to get icon URL<a href="#How-to-get-icon-URL" class="wiki-anchor"></a></h3>
+
+	<p>For code 500 - light rain  icon = "10d". See below a <a href="#Weather-Condition-Codes-2">full list of codes</a>
+	<br>
+	URL is <a class="external" href="https://openweathermap.org/img/wn/10d@2x.png">https://openweathermap.org/img/wn/10d@2x.png</a></p>
+
+
+	<a id="Icon-list"></a>
+	<table class="table table-bordered">
+	    <caption><h3>Icon list<a href="#Icon-list" class="wiki-anchor"></a></h3></caption>
+		<tbody><tr>
+			<th>Day icon</th>
+			<th>Night icon</th>
+			<th>Description</th>
+		</tr>
+		<tr>
+			<td>01d.png  <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/01d@2x.png" width="50px" height="50px" alt="">  </td>
+			<td> 01n.png  <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/01n@2x.png" width="50px" height="50px" alt="">  </td>
+			<td> clear sky</td>
+		</tr>
+		<tr>
+			<td>02d.png  <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/02d@2x.png" width="50px" height="50px" alt=""> </td>
+			<td> 02n.png  <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/02n@2x.png" width="50px" height="50px" alt="">  </td>
+			<td> few clouds </td>
+		</tr>
+		<tr>
+			<td>03d.png  <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/03d@2x.png" width="50px" height="50px" alt="">  </td>
+			<td> 03n.png  <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/03n@2x.png" width="50px" height="50px" alt="">  </td>
+			<td> scattered clouds </td>
+		</tr>
+		<tr>
+			<td>04d.png  <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/04d@2x.png" width="50px" height="50px" alt=""> </td>
+			<td> 04n.png  <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/04n@2x.png" width="50px" height="50px" alt="">  </td>
+			<td> broken clouds </td>
+		</tr>
+		<tr>
+			<td>09d.png  <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/09d@2x.png" width="50px" height="50px" alt="">  </td>
+			<td> 09n.png  <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/09n@2x.png" width="50px" height="50px" alt="">  </td>
+			<td> shower rain </td>
+		</tr>
+		<tr>
+			<td>10d.png  <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/10d@2x.png" width="50px" height="50px" alt="">  </td>
+			<td> 10n.png  <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/10n@2x.png" width="50px" height="50px" alt="">  </td>
+			<td> rain </td>
+		</tr>
+		<tr>
+			<td>11d.png  <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/11d@2x.png" width="50px" height="50px" alt="">  </td>
+			<td> 11n.png  <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/11n@2x.png" width="50px" height="50px" alt="">  </td>
+			<td> thunderstorm </td>
+		</tr>
+		<tr>
+			<td>13d.png  <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/13d@2x.png" width="50px" height="50px" alt="">  </td>
+			<td> 13n.png  <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/13n@2x.png" width="50px" height="50px" alt="">  </td>
+			<td> snow  </td>
+		</tr>
+		<tr>
+			<td>50d.png  <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/50d@2x.png" width="50px" height="50px" alt="">  </td>
+			<td> 50n.png  <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/50n@2x.png" width="50px" height="50px" alt="">  </td>
+			<td> mist </td>
+		</tr>
+	</tbody></table>
+
+	<a id="Weather-Condition-Codes-2"></a>
+<h2 class="headline first-child text-color"> Weather condition codes<a href="#Weather-Condition-Codes-2" class="wiki-anchor"></a></h2>
+<table class="table table-bordered">
+    <caption><h3>Group 2xx: Thunderstorm<a href="#Thunderstorm" class="wiki-anchor"></a></h3></caption>
+    <tbody><tr>
+        <th width="100">ID</th>
+        <th width="200">Main</th>
+        <th width="300">Description</th>
+        <th width="100">Icon</th>
+    </tr>
+    <tr>
+        <td> 200 </td>
+        <td> Thunderstorm </td>
+        <td> thunderstorm with light rain </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/11d@2x.png" alt="" width="20"> 11d </td>
+    </tr>
+    <tr>
+        <td> 201 </td>
+        <td> Thunderstorm </td>
+        <td> thunderstorm with rain </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/11d@2x.png" alt="" width="20"> 11d </td>
+    </tr>
+    <tr>
+        <td> 202 </td>
+        <td> Thunderstorm </td>
+        <td> thunderstorm with heavy rain </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/11d@2x.png" alt="" width="20"> 11d </td>
+    </tr>
+    <tr>
+        <td> 210 </td>
+        <td> Thunderstorm </td>
+        <td> light thunderstorm </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/11d@2x.png" alt="" width="20"> 11d </td>
+    </tr>
+    <tr>
+        <td> 211 </td>
+        <td> Thunderstorm </td>
+        <td> thunderstorm </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/11d@2x.png" alt="" width="20"> 11d </td>
+    </tr>
+    <tr>
+        <td> 212 </td>
+        <td> Thunderstorm </td>
+        <td> heavy thunderstorm </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/11d@2x.png" alt="" width="20"> 11d </td>
+    </tr>
+    <tr>
+        <td> 221 </td>
+        <td> Thunderstorm </td>
+        <td> ragged thunderstorm </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/11d@2x.png" alt="" width="20"> 11d </td>
+    </tr>
+    <tr>
+        <td> 230 </td>
+        <td> Thunderstorm </td>
+        <td> thunderstorm with light drizzle </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/11d@2x.png" alt="" width="20"> 11d </td>
+    </tr>
+    <tr>
+        <td> 231 </td>
+        <td> Thunderstorm </td>
+        <td> thunderstorm with drizzle </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/11d@2x.png" alt="" width="20"> 11d </td>
+    </tr>
+    <tr>
+        <td> 232 </td>
+        <td> Thunderstorm </td>
+        <td> thunderstorm with heavy drizzle </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/11d@2x.png" alt="" width="20"> 11d </td>
+    </tr>
+</tbody></table>
+
+<a id="Group 3xx: Drizzle"></a>
+<table class="table table-bordered">
+    <caption><h3>Group 3xx: Drizzle<a href="#Drizzle" class="wiki-anchor"></a></h3></caption>
+    <tbody><tr>
+        <th width="100">ID</th>
+        <th width="200">Main</th>
+        <th width="300">Description</th>
+        <th width="100">Icon</th>
+    </tr>
+    <tr>
+        <td> 300 </td>
+        <td> Drizzle </td>
+        <td> light intensity drizzle </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/09d@2x.png" alt="" width="20"> 09d </td>
+    </tr>
+    <tr>
+        <td> 301 </td>
+        <td> Drizzle </td>
+        <td> drizzle </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/09d@2x.png" alt="" width="20"> 09d </td>
+    </tr>
+    <tr>
+        <td> 302 </td>
+        <td> Drizzle </td>
+        <td> heavy intensity drizzle </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/09d@2x.png" alt="" width="20"> 09d </td>
+    </tr>
+    <tr>
+        <td> 310 </td>
+        <td> Drizzle </td>
+        <td> light intensity drizzle rain </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/09d@2x.png" alt="" width="20"> 09d </td>
+    </tr>
+    <tr>
+        <td> 311 </td>
+        <td> Drizzle </td>
+        <td> drizzle rain </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/09d@2x.png" alt="" width="20"> 09d </td>
+    </tr>
+    <tr>
+        <td> 312 </td>
+        <td> Drizzle </td>
+        <td> heavy intensity drizzle rain </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/09d@2x.png" alt="" width="20"> 09d </td>
+    </tr>
+    <tr>
+        <td> 313 </td>
+        <td> Drizzle </td>
+        <td> shower rain and drizzle </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/09d@2x.png" alt="" width="20"> 09d </td>
+    </tr>
+    <tr>
+        <td> 314 </td>
+        <td> Drizzle </td>
+        <td> heavy shower rain and drizzle </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/09d@2x.png" alt="" width="20"> 09d </td>
+    </tr>
+    <tr>
+        <td> 321 </td>
+        <td> Drizzle </td>
+        <td> shower drizzle </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/09d@2x.png" alt="" width="20"> 09d </td>
+    </tr>
+</tbody></table>
+
+<a id="Group 5xx: Rain"></a>
+<table class="table table-bordered">
+    <caption><h3>Group 5xx: Rain<a href="#Rain" class="wiki-anchor"></a></h3></caption>
+    <tbody><tr>
+        <th width="100">ID</th>
+        <th width="200">Main</th>
+        <th width="300">Description</th>
+        <th width="100">Icon</th>
+    </tr>
+    <tr>
+        <td> 500 </td>
+        <td> Rain </td>
+        <td> light rain </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/10d@2x.png" alt="" width="20"> 10d </td>
+    </tr>
+    <tr>
+        <td> 501 </td>
+        <td> Rain </td>
+        <td> moderate rain </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/10d@2x.png" alt="" width="20"> 10d </td>
+    </tr>
+    <tr>
+        <td> 502 </td>
+        <td> Rain </td>
+        <td> heavy intensity rain  </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/10d@2x.png" alt="" width="20"> 10d </td>
+    </tr>
+    <tr>
+        <td> 503 </td>
+        <td> Rain </td>
+        <td> very heavy rain </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/10d@2x.png" alt="" width="20"> 10d </td>
+    </tr>
+    <tr>
+        <td> 504 </td>
+        <td> Rain </td>
+        <td> extreme rain </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/10d@2x.png" alt="" width="20"> 10d </td>
+    </tr>
+    <tr>
+        <td> 511 </td>
+        <td> Rain </td>
+        <td> freezing rain </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/13d@2x.png" alt="" width="20"> 13d </td>
+    </tr>
+    <tr>
+        <td> 520 </td>
+        <td> Rain </td>
+        <td> light intensity shower rain  </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/09d@2x.png" alt="" width="20"> 09d </td>
+    </tr>
+    <tr>
+        <td> 521 </td>
+        <td> Rain </td>
+        <td> shower rain </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/09d@2x.png" alt="" width="20"> 09d </td>
+    </tr>
+    <tr>
+        <td> 522 </td>
+        <td> Rain </td>
+        <td> heavy intensity shower rain </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/09d@2x.png" alt="" width="20"> 09d </td>
+    </tr>
+    <tr>
+        <td> 531 </td>
+        <td> Rain </td>
+        <td> ragged shower rain </td>
+        <td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/09d@2x.png" alt="" width="20"> 09d </td>
+    </tr>
+</tbody></table>
+
+	<a id="Group 6xx: Snow"></a>
+	<table class="table table-bordered">
+	    <caption><h3>Group 6xx: Snow<a href="#Snow" class="wiki-anchor"></a></h3></caption>
+		<tbody><tr>
+			<th width="100">ID</th>
+			<th width="200">Main</th>
+			<th width="300">Description</th>
+			<th width="100">Icon</th>
+		</tr>
+		<tr>
+			<td> 600 </td>
+			<td> Snow </td>
+			<td> light snow </td>
+			<td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/13d@2x.png" alt="" width="20"> 13d </td>
+		</tr>
+		<tr>
+			<td> 601 </td>
+			<td> Snow </td>
+			<td> snow </td>
+			<td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/13d@2x.png" alt="" width="20"> 13d</td>
+		</tr>
+		<tr>
+			<td> 602 </td>
+			<td> Snow </td>
+			<td> heavy snow </td>
+			<td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/13d@2x.png" alt="" width="20"> 13d </td>
+		</tr>
+		<tr>
+			<td> 611 </td>
+			<td> Snow </td>
+			<td> sleet </td>
+			<td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/13d@2x.png" alt="" width="20"> 13d </td>
+		</tr>
+		<tr>
+			<td> 612 </td>
+			<td> Snow </td>
+			<td> light shower sleet </td>
+			<td><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/13d@2x.png" alt="" width="20"> 13d </td>
+		</tr>
+			<tr>
+			<td> 613 </td>
+			<td> Snow </td>
+			<td> shower sleet </td>
+			<td><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/13d@2x.png" alt="" width="20"> 13d </td>
+		</tr>
+		<tr>
+			<td> 615 </td>
+			<td> Snow </td>
+			<td> light rain and snow </td>
+			<td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/13d@2x.png" alt="" width="20"> 13d </td>
+		</tr>
+		<tr>
+			<td> 616 </td>
+			<td> Snow </td>
+			<td> rain and snow </td>
+			<td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/13d@2x.png" alt="" width="20"> 13d </td>
+		</tr>
+		<tr>
+			<td> 620 </td>
+			<td> Snow </td>
+			<td> light shower snow </td>
+			<td><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/13d@2x.png" alt="" width="20"> 13d </td>
+		</tr>
+		<tr>
+			<td> 621 </td>
+			<td> Snow </td>
+			<td> shower snow </td>
+			<td><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/13d@2x.png" alt="" width="20"> 13d </td>
+		</tr>
+		<tr>
+			<td> 622 </td>
+			<td> Snow </td>
+			<td> heavy shower snow </td>
+			<td><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/13d@2x.png" alt="" width="20"> 13d </td>
+		</tr>
+	</tbody></table>
+
+
+
+
+	<a id="Group 7xx: Atmosphere"></a>
+    <table class="table table-bordered">
+    <caption><h3>Group 7xx: Atmosphere <a href="#Atmosphere" class="wiki-anchor"></a></h3></caption>
+	
+	
+		<tbody><tr>
+			<th width="100">ID </th>
+			<th width="200"> Main </th>
+			<th width="300"> Description </th>
+			<th width="100">Icon </th>
+		</tr>
+		<tr>
+			<td> 701 </td>
+			<td> Mist </td>
+			<td> mist </td>
+			<td><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/50d@2x.png" alt="" width="20"> 50d</td>
+		</tr>
+		<tr>
+			<td> 711 </td>
+			<td> Smoke </td>
+			<td> smoke </td>
+			<td><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/50d@2x.png" alt="" width="20"> 50d</td>
+		</tr>
+		<tr>
+			<td> 721 </td>
+			<td> Haze </td>
+			<td> haze </td>
+			<td><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/50d@2x.png" alt="" width="20"> 50d</td>
+		</tr>
+		<tr>
+			<td> 731 </td>
+			<td> Dust </td>
+			<td> sand/dust whirls </td>
+			<td><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/50d@2x.png" alt="" width="20"> 50d</td>
+		</tr>
+		<tr>
+			<td> 741 </td>
+			<td> Fog </td>
+			<td> fog </td>
+			<td><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/50d@2x.png" alt="" width="20"> 50d</td>
+		</tr>
+		<tr>
+			<td>751 </td>
+			<td> Sand </td>
+			<td> sand </td>
+			<td><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/50d@2x.png" alt="" width="20"> 50d</td>
+		</tr>
+		<tr>
+			<td>761 </td>
+			<td> Dust </td>
+			<td> dust </td>
+			<td><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/50d@2x.png" alt="" width="20"> 50d</td>
+		</tr>
+		<tr>
+			<td>762 </td>
+			<td> Ash </td>
+			<td> volcanic ash </td>
+			<td><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/50d@2x.png" alt="" width="20"> 50d</td>
+		</tr>
+		<tr>
+			<td>771 </td>
+			<td> Squall </td>
+			<td> squalls </td>
+			<td><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/50d@2x.png" alt="" width="20"> 50d</td>
+		</tr>
+		<tr>
+			<td>781 </td>
+			<td> Tornado </td>
+			<td> tornado </td>
+			<td><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/50d@2x.png" alt="" width="20"> 50d</td>
+		</tr>
+	</tbody></table>
+
+
+
+     	<a id="Group 800: Clear"></a>
+		<table class="table table-bordered">
+        <caption><h3>Group 800: Clear<a href="#Clear" class="wiki-anchor"></a></h3></caption>
+		<tbody><tr>
+			<th width="100">ID </th>
+			<th width="200"> Main </th>
+			<th width="300"> Description </th>
+			<th width="100">Icon </th>
+		</tr>
+		<tr>
+			<td> 800 </td>
+			<td> Clear </td>
+			<td> clear sky </td>
+			<td><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/01d@2x.png" alt="" width="20"> 01d <br><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/01n.png" alt="" width="20"> 01n</td>
+		</tr>
+	</tbody></table>
+
+
+
+
+	<a id="Group 8xx: Clouds"></a>
+	<table class="table table-bordered">
+    <caption><h3>Group 80x: Clouds<a href="#Clouds" class="wiki-anchor"></a></h3></caption>
+		<tbody><tr>
+			<th width="100">ID </th>
+			<th width="200"> Main </th>
+			<th width="300"> Description </th>
+			<th width="100">Icon </th>
+		</tr>
+		<tr>
+			<td> 801 </td>
+			<td> Clouds </td>
+			<td> few clouds: 11-25% </td>
+			<td><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/02d@2x.png" alt="" width="20"> 02d <br><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/02n@2x.png" alt="" width="20"> 02n</td>
+		</tr>
+		<tr>
+			<td> 802 </td>
+			<td> Clouds </td>
+			<td> scattered clouds: 25-50%  </td>
+			<td><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/03d@2x.png" alt="" width="20"> 03d <br><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/03n@2x.png" alt="" width="20"> 03n</td>
+		</tr>
+		<tr>
+			<td> 803 </td>
+			<td> Clouds </td>
+			<td> broken clouds: 51-84%  </td>
+			<td> <img src="Weather%20Conditions%20-%20OpenWeatherMap_files/04d@2x.png" alt="" width="20"> 04d <br><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/04n@2x.png" alt="" width="20"> 04n </td>
+		</tr>
+		<tr>
+			<td> 804 </td>
+			<td> Clouds </td>
+			<td> overcast clouds: 85-100%  </td>
+			<td><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/04d@2x.png" alt="" width="20"> 04d <br><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/04n@2x.png" alt="" width="20"> 04n</td>
+		</tr>
+	</tbody></table>
+
+
+
+
+	<!--<a id="Group 90x: Extreme"></a>
+<h3 >Group 90x: Extreme<a href="#Extreme" class="wiki-anchor"></a></h3>
+
+
+	<table class="table table-bordered">
+		<tr>
+			<th>ID </th>
+			<th> Meaning </th>
+		</tr>
+		<tr>
+			<td> 900 </td>
+			<td> tornado </td>
+		</tr>
+		<tr>
+			<td> 901 </td>
+			<td> tropical storm </td>
+		</tr>
+		<tr>
+			<td> 902 </td>
+			<td> hurricane </td>
+		</tr>
+		<tr>
+			<td> 903 </td>
+			<td> cold </td>
+		</tr>
+		<tr>
+			<td> 904 </td>
+			<td> hot </td>
+		</tr>
+		<tr>
+			<td> 905 </td>
+			<td> windy </td>
+		</tr>
+		<tr>
+			<td> 906 </td>
+			<td> hail </td>
+		</tr>
+	</table>
+
+
+
+
+    <a id="Group 95x: Additional"></a>
+  <h3> Group 9xx: Additional<a href="#Additional" class="wiki-anchor"></a></h3>
+
+
+	<table class="table table-bordered">
+		<tr>
+			<th>ID </th>
+			<th> Meaning </th>
+		</tr>
+
+		<tr>
+			<td>      951 </td>
+			<td> calm </td>
+		</tr>
+		<tr>
+			<td>      952 </td>
+			<td> light breeze </td>
+		</tr>
+		<tr>
+			<td>      953 </td>
+			<td> gentle breeze </td>
+		</tr>
+		<tr>
+			<td>      954 </td>
+			<td> moderate breeze </td>
+		</tr>
+		<tr>
+			<td>      955 </td>
+			<td> fresh breeze </td>
+		</tr>
+		<tr>
+			<td>      956 </td>
+			<td> strong breeze </td>
+		</tr>
+		<tr>
+			<td>      957 </td>
+			<td> high wind, near gale </td>
+		</tr>
+		<tr>
+			<td>      958 </td>
+			<td> gale </td>
+		</tr>
+		<tr>
+			<td>      959 </td>
+			<td> severe gale </td>
+		</tr>
+		<tr>
+			<td>      960 </td>
+			<td> storm </td>
+		</tr>
+		<tr>
+			<td>      961 </td>
+			<td> violent storm </td>
+		</tr>
+		<tr>
+			<td>      962 </td>
+			<td> hurricane </td>
+		</tr>
+	</table>-->
+
+
+</div>
+                <div class="col-sm-4">
+                <br>
+                <br>
+                <br>
+
+                    <ul>
+                        <li><a href="#Icon-list">Weather icons</a>
+                        </li>
+                         <li><a href="#Weather-Condition-Codes-2">Weather condition codes</a>
+                        </li>
+                        
+                    </ul>
+
+                    <br>
+                    <br>
+
+
+                    <script async="" src="Weather%20Conditions%20-%20OpenWeatherMap_files/googlesyndication_adsbygoogle.js"></script>
+<!-- 120x600 -->
+<ins class="adsbygoogle" style="display:inline-block;width:120px;height:600px" data-ad-client="ca-pub-6837309406068967" data-ad-slot="2523220128"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>                </div>
+</div>
+</div>     
+                        <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <script async="" src="Weather%20Conditions%20-%20OpenWeatherMap_files/googlesyndication_adsbygoogle.js"></script>
+<!-- 728x90 -->
+<ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-6837309406068967" data-ad-slot="6027350861"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>                    </div>
+                </div>                
+            </div>
+                                    
+        </main>
+        <div id="stick-footer-panel"><div class="stick-footer-panel stick-footer-panel--hidden"><div class="container"><div class="row"><div class="stick-footer-panel__container"><p class="stick-footer-panel__description">We
+ use cookies which are essential for the site to work. We also use 
+non-essential cookies to help us improve our services. Any data 
+collected is anonymised. You can allow all cookies or manage them 
+individually.</p><div class="stick-footer-panel__btn-container"><button type="button" class="stick-footer-panel__link">Allow all</button><a href="https://openweathermap.org/cookies-settings" class="stick-footer-panel__link" rel="noopener noreferrer"> Manage cookies </a></div></div></div></div></div></div>
+                    <div id="footer-website" onclick="toggleFooterSection(event)">
+   <div class="inner-footer-container">
+      <div class="horizontal-section">
+         <div class="footer-section">
+            <p class="section-heading">Product Collections</p>
+            <div class="section-content">
+               <ul>
+                  <li><a href="https://openweathermap.org/api#current">Current and Forecast APIs</a></li>
+                  <li><a href="https://openweathermap.org/api#history">Historical Weather Data</a></li>
+                  <li><a href="https://openweathermap.org/api#maps">Weather Maps</a></li>
+                  <li><a href="https://openweathermap.org/weather-dashboard">Weather Dashboard</a></li>
+                  <li><a href="https://openweathermap.org/widgets-constructor">Widgets</a></li>
+               </ul>
+            </div>
+         </div>
+         <div class="footer-section">
+            <p class="section-heading">Subscription</p>
+            <div class="section-content">
+               <ul>
+                  <li><a href="https://openweathermap.org/appid">How to start</a></li>
+                  <li><a href="https://openweathermap.org/price">Pricing</a></li>
+                  <li><a href="https://home.openweathermap.org/users/sign_up">Subscribe for free</a></li>
+                  <li><a href="https://openweathermap.org/faq">FAQ</a></li>
+               </ul>
+            </div>
+         </div>
+         <div class="footer-section">
+            <p class="section-heading">Company</p>
+            <div class="section-content">
+               <p>OpenWeather is a team of IT experts and data 
+scientists that has been practising deep weather data science. For each 
+point on the globe, OpenWeather provides historical, current and 
+forecasted weather data via light-speed APIs. Headquarters in London, 
+UK.</p>
+            </div>
+         </div>
+      </div>
+      <div class="horizontal-section">
+         <div class="footer-section">
+            <p class="section-heading">Technologies</p>
+            <div class="section-content">
+               <ul>
+                  <li><a href="https://openweathermap.org/technology">Our technology</a></li>
+                  <li><a href="https://openweathermap.org/accuracy-and-quality">Accuracy and quality of weather data</a></li>
+                  <li><a href="https://openweathermap.org/stations">Connect your weather station</a></li>
+               </ul>
+            </div>
+         </div>
+         <div class="footer-section">
+            <p class="section-heading">Terms &amp; Conditions</p>
+            <div class="section-content">
+               <ul>
+                  <li><a href="https://openweather.co.uk/storage/app/media/Terms/Openweather_terms_and_conditions_of_sale.pdf" target="_blank">Terms and conditions of sale</a></li>
+                  <li><a href="https://openweather.co.uk/privacy-policy" target="_blank">Privacy Policy</a></li>
+                  <li><a href="https://openweather.co.uk/storage/app/media/Terms/Openweather_website_terms_and_conditions_of_use.pdf" target="_blank">Website	terms	and	conditions</a></li>
+               </ul>
+            </div>
+         </div>
+         <div class="footer-section not-foldable">
+            <p class="section-heading" style="visibility: hidden">Contact us</p>
+            <div class="section-content">
+               <ul>
+                  <li><a href="https://openweathermap.org/about-us">About us</a></li>
+                  <li><a href="https://openweather.co.uk/blog/category/weather" target="_blank">Blog</a></li>
+                   <li><a href="https://openweather.co.uk/" target="_blank">OpenWeather for Business</a></li>
+                  <li><a href="https://home.openweathermap.org/questions" target="_blank">Ask a question</a></li>
+                 <!--  <li><a href="mailto:info@openweathermap.org">info@openweathermap.org</a>  -->
+                 
+               </ul>
+            </div>
+         </div>
+      </div>
+      <div class="horizontal-section">
+      <div class="footer-section">
+      <div class="my-5">
+         <p style="margin: 0;">Download OpenWeather app</p>
+         <div style="display: flex; flex-direction: row;">
+            <a style="margin-left: -10px;" href="https://apps.apple.com/gb/app/openweather/id1535923697" target="_blank">
+            <img style="height:60px; padding:10px;" src="Weather%20Conditions%20-%20OpenWeatherMap_files/app-store-badge.svg">
+            </a>  
+            <a href="https://play.google.com/store/apps/details?id=uk.co.openweather" target="_blank">
+            <img style="height:60px;" alt="Get it on Google Play" src="Weather%20Conditions%20-%20OpenWeatherMap_files/google-play-badge.png">
+            </a>
+         </div>
+         </div>
+      </div>
+      <div class="footer-section">
+      <div class="my-5">
+      <p class="section-heading" style="visibility: hidden">RMET</p>
+      <img style="height:70px; " src="Weather%20Conditions%20-%20OpenWeatherMap_files/rmets1.png">
+      </div>
+      </div>
+
+      </div>
+      <div class="horizontal-section my-5" style="align-items: start">
+      <div>
+         <span>Supplier of Achilles UVDB community</span><br>
+         <span>© 2012 — 2024 OpenWeather ® All rights reserved</span><br><br>
+       </div>     
+         <div class="social">
+            <a href="https://www.facebook.com/groups/270748973021342" target="_blank"><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/icon_facebook.png"></a>
+            <a href="https://twitter.com/OpenWeatherMap" target="_blank"><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/icon_twitter.png"></a>
+            <a href="https://www.linkedin.com/company/9816754" target="_blank"><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/icon_linkedin.png"></a>
+            <a href="https://medium.com/@openweathermap" target="_blank"><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/icon_medium.png"></a>
+            <a href="https://t.me/openweathermap" target="_blank"><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/icon_telegram.png"></a>
+            <a href="https://github.com/openweathermap" target="_blank"><img src="Weather%20Conditions%20-%20OpenWeatherMap_files/icon_github.png"></a>
+         </div>
+      </div>
+      <div class="horizontal-section"></div>
+   </div>
+</div>   
+                 
+        <script src="Weather%20Conditions%20-%20OpenWeatherMap_files/raven.min.js"></script>
+<script>Raven.config('http://66df88eb63e94f27964b84031e49b358@sentry.owm.io/16').install()</script>  
+        <script src="Weather%20Conditions%20-%20OpenWeatherMap_files/bundle_owm_postload.c31872127471c475ade1.js"></script>
+<script src="Weather%20Conditions%20-%20OpenWeatherMap_files/stick_footer_panel.c31872127471c475ade1.js"></script>
+<script src="Weather%20Conditions%20-%20OpenWeatherMap_files/postload_scripts_js.c31872127471c475ade1.js"></script>
+<script src="Weather%20Conditions%20-%20OpenWeatherMap_files/advertising.js"></script>           
+    
+<div id="topcontrol" style="position: fixed; bottom: 5px; right: 5px; opacity: 1; cursor: pointer;" title=""><i class="fa fa-angle-up backtotop"></i></div></body></html>
