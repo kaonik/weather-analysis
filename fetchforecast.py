@@ -5,6 +5,7 @@ import psycopg2
 import psycopg2.extras
 import time
 from tqdm import tqdm
+from concurrent.futures import ThreadPoolExecutor
 
 # OpenWeatherMap API key
 api_key = os.environ.get('OPENWEATHER_API_KEY')
@@ -33,13 +34,14 @@ def get_locations(db_conn_params):
 
 
 #fetch forecast data from OpenWeatherMap API
-def get_forecast_data(lat,lon,api_key=api_key):
-    url = f'https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={api_key}&units=imperial'
+def get_forecast_data(location, api_key=api_key):
+    location_id, latitude, longitude = location
+    url = f'https://api.openweathermap.org/data/2.5/forecast?lat={latitude}&lon={longitude}&appid={api_key}&units=imperial'
     response = requests.get(url)
     if response.status_code == 200:
         return response.json()
     else:
-        print(f'Error: {response.status_code}')
+        print(f'Error fetching forecast data for {location_id}: {response.status_code}')
         return None
 
 
@@ -149,35 +151,38 @@ def bulk_upsert_rain_snow(db_conn_params, forecast_ids, forecast_data):
         # Use executemany to execute the INSERT query for all forecast records at once
         cursor.executemany('INSERT INTO Rain (ForecastID, Volume3h) VALUES (%s, %s);', [(forecast_id, rain) for forecast_id, rain, snow in bulk_data if rain != 0])
         cursor.executemany('INSERT INTO Snow (ForecastID, Volume3h) VALUES (%s, %s);', [(forecast_id, snow) for forecast_id, rain, snow in bulk_data if snow != 0])
-
+        conn.commit()
     except (Exception, psycopg2.DatabaseError) as error:
         print(f'Error: {error}')
+        conn.rollback()
 
     finally:
-        conn.commit()
         cursor.close()
         conn.close()
 
 locations = get_locations(db_conn_params)
 all_forecasts = []
 
-for location in tqdm(locations[:2], desc='Fetching forecasts', unit='location'):
-    location_id, latitude, longitude = location
-    forecast_data = get_forecast_data(latitude, longitude, api_key)
+# Fetch forecast data for all locations in parallel
+with ThreadPoolExecutor() as executor:
+    forecast_data = list(tqdm(executor.map(get_forecast_data, locations[:1]), 
+                              total=len(locations[:1]), desc='Fetching forecast data', unit='location'))
 
-    #Sleep for 1 second to avoid exceeding API rate limit
-    #time.sleep(1)
+
+
+# Iterate over locations and forecast data
+for location, forecast_data in zip(locations, forecast_data):
+    location_id, latitude, longitude = location
     
-    #Check if forecast data exists for location before processing
+    # Check if forecast data exists for location before processing
     if forecast_data and 'list' in forecast_data:
-        #Process forecast data
+        # Process forecast data
         processed_data = extract_forecast_data(forecast_data['list'])
-        #Add LocationID to processed data
         upsert_data = [(location_id, *entry) for entry in processed_data]
-        #Add processed data to list of all forecasts
         all_forecasts.extend(upsert_data)
     else:
         print(f'Process forecast data failed at {location}.')
+
 
 
 if all_forecasts:
@@ -188,4 +193,5 @@ else:
 
 #Retrieve ForecastID based on LocationID and TimestampISO and use to insert into Rain and Snow tables.
 forecast_ids = get_forecast_ids(db_conn_params, all_forecasts)
+print(forecast_ids)
 bulk_upsert_rain_snow(db_conn_params, forecast_ids, all_forecasts)
