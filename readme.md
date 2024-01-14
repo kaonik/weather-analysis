@@ -7,7 +7,7 @@ Table Creation contains the SQL statements for initial table creation.
 ## Tentative Next Steps 
 
 Set up data pipeline to fetch, clean, and store data in the database for historical access and real-time analysis.\
-&emsp;&emsp; ~~- Get single fetch connection to database.\~~ Complete
+&emsp;&emsp; ~~- Get single fetch connection to database.~~ Complete\
 &emsp;&emsp; - Create script to pull historical data to database.\
 Create a dashboard for visualizing data, possible features:\
 &emsp;&emsp; - Visualize data over map of US and with graphs, allow feature selection (temp, wind, humidity, etc) and time range.\
