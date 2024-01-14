@@ -37,12 +37,12 @@ create table Location (
 create table Forecast (
     ForecastID serial primary key,
     LocationID int references Location(LocationID),
-    WeatherConditionID int references WeatherConditionTypes(WeatherConditionID),
     Temperature float,
     Pressure int,
     SeaLevelPressure int,
     GroundLevelPressure int,
     Humidity int,
+    WeatherConditionID int references WeatherConditionTypes(WeatherConditionID),
     Cloudiness int,
     WindSpeed float,
     WindDirection int,
