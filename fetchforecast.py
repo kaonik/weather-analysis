@@ -115,29 +115,42 @@ def bulk_upsert_forecasts(db_conn_params, forecast_records):
         conn.close()
 
 #fetch forecastid from database based on locationid and timestampiso
-def get_forecast_ids(db_conn_params, forecast_records):
+def get_forecast_ids(db_conn_params, forecast_records, batch_size=100):
     conn = psycopg2.connect(**db_conn_params)
-    cursor = conn.cursor()
     forecast_ids = []
 
     try:
-        # Create a list of tuples containing the location ID and timestamp ISO for each forecast record
-        forecast_params = [(record[0], record[-3]) for record in forecast_records]
+        # Only include records where rain or snow is not zero
+        forecast_params = [
+            (record[0], record[-3]) for record in forecast_records 
+            if record[-2] != 0 or record[-1] != 0
+        ]
 
-        # Use executemany to execute the SELECT query for all forecast records at once
-        cursor.executemany('SELECT ForecastID FROM Forecast WHERE LocationID = %s AND TimestampISO = %s;', forecast_params)
-        results = cursor.fetchall()
+        # Function to divide the forecast_params into smaller batches
+        def chunks(lst, n):
+            for i in range(0, len(lst), n):
+                yield lst[i:i + n]
 
-        # Append the forecast IDs to the forecast_ids list
-        forecast_ids.extend([result[0] for result in results])
+        # Process each batch of parameters
+        with conn.cursor() as cursor:
+            for params_chunk in chunks(forecast_params, batch_size):
+                placeholders = ','.join(cursor.mogrify('(%s,%s)', p).decode('utf-8') for p in params_chunk)
+                cursor.execute(f"""
+                    SELECT ForecastID, LocationID, TimestampISO
+                    FROM Forecast
+                    WHERE (LocationID, TimestampISO) IN ({placeholders})
+                """)
+                forecast_ids.extend([row[0] for row in cursor.fetchall()])
 
         return forecast_ids
     
     except (Exception, psycopg2.DatabaseError) as error:
         print(f'Error: {error}')
+        conn.rollback()
     finally:
-        cursor.close()
         conn.close()
+
+
 
 #insert rain and snow data into database
 def bulk_upsert_rain_snow(db_conn_params, forecast_ids, forecast_data):
@@ -165,8 +178,8 @@ all_forecasts = []
 
 # Fetch forecast data for all locations in parallel
 with ThreadPoolExecutor() as executor:
-    forecast_data = list(tqdm(executor.map(get_forecast_data, locations[:1]), 
-                              total=len(locations[:1]), desc='Fetching forecast data', unit='location'))
+    forecast_data = list(tqdm(executor.map(get_forecast_data, locations), 
+                              total=len(locations), desc='Fetching forecast data', unit='location'))
 
 
 
@@ -193,5 +206,4 @@ else:
 
 #Retrieve ForecastID based on LocationID and TimestampISO and use to insert into Rain and Snow tables.
 forecast_ids = get_forecast_ids(db_conn_params, all_forecasts)
-print(forecast_ids)
 bulk_upsert_rain_snow(db_conn_params, forecast_ids, all_forecasts)
