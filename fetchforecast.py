@@ -70,7 +70,7 @@ def extract_forecast_data(forecast_list):
         extracted_data.append((temp, pressure, sea_level, grnd_level, humidity,
                                weather_condition_id,
                                cloudiness, wind_speed, wind_direction, wind_gust,
-                               visibility, pop, rain, snow, dt_txt))
+                               visibility, pop, dt_txt, rain, snow))
     return extracted_data
 
 #bulk upsert forecast data into database
@@ -78,10 +78,13 @@ def bulk_upsert_forecasts(db_conn_params, forecast_records):
     conn = psycopg2.connect(**db_conn_params)
     cursor = conn.cursor()
 
+    #Remove rain and snow from forecast_records
+    forecast_records = [record[:-2] for record in forecast_records]
+
     upsert_query = """
     INSERT INTO Forecast (LocationID, Temperature, Pressure, SeaLevelPressure, GroundLevelPressure, Humidity,
                           WeatherConditionID, Cloudiness, WindSpeed, WindDirection,
-                          WindGust, Visibility, PrecipitationChance, RainVolume, SnowVolume, TimestampISO)
+                          WindGust, Visibility, PrecipitationChance, TimestampISO)
     VALUES %s
     ON CONFLICT (LocationID, TimestampISO)
     DO UPDATE SET
@@ -96,9 +99,7 @@ def bulk_upsert_forecasts(db_conn_params, forecast_records):
         WindDirection = EXCLUDED.WindDirection,
         WindGust = EXCLUDED.WindGust,
         Visibility = EXCLUDED.Visibility,
-        PrecipitationChance = EXCLUDED.PrecipitationChance,
-        RainVolume = EXCLUDED.RainVolume,
-        SnowVolume = EXCLUDED.SnowVolume;
+        PrecipitationChance = EXCLUDED.PrecipitationChance;
     """
 
     try:
@@ -111,10 +112,56 @@ def bulk_upsert_forecasts(db_conn_params, forecast_records):
         cursor.close()
         conn.close()
 
+#fetch forecastid from database based on locationid and timestampiso
+def get_forecast_ids(db_conn_params, forecast_records):
+    conn = psycopg2.connect(**db_conn_params)
+    cursor = conn.cursor()
+    forecast_ids = []
+
+    try:
+        # Create a list of tuples containing the location ID and timestamp ISO for each forecast record
+        forecast_params = [(record[0], record[-3]) for record in forecast_records]
+
+        # Use executemany to execute the SELECT query for all forecast records at once
+        cursor.executemany('SELECT ForecastID FROM Forecast WHERE LocationID = %s AND TimestampISO = %s;', forecast_params)
+        results = cursor.fetchall()
+
+        # Append the forecast IDs to the forecast_ids list
+        forecast_ids.extend([result[0] for result in results])
+
+        return forecast_ids
+    
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(f'Error: {error}')
+    finally:
+        cursor.close()
+        conn.close()
+
+#insert rain and snow data into database
+def bulk_upsert_rain_snow(db_conn_params, forecast_ids, forecast_data):
+    try:
+        conn = psycopg2.connect(**db_conn_params)
+        cursor = conn.cursor()
+
+        # Create a list of tuples containing the forecast ID, rain volume, and snow volume for each forecast record
+        bulk_data = [(forecast_id, record[-2], record[-1]) for forecast_id, record in zip(forecast_ids, forecast_data)]
+
+        # Use executemany to execute the INSERT query for all forecast records at once
+        cursor.executemany('INSERT INTO Rain (ForecastID, Volume3h) VALUES (%s, %s);', [(forecast_id, rain) for forecast_id, rain, snow in bulk_data if rain != 0])
+        cursor.executemany('INSERT INTO Snow (ForecastID, Volume3h) VALUES (%s, %s);', [(forecast_id, snow) for forecast_id, rain, snow in bulk_data if snow != 0])
+
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(f'Error: {error}')
+
+    finally:
+        conn.commit()
+        cursor.close()
+        conn.close()
+
 locations = get_locations(db_conn_params)
 all_forecasts = []
 
-for location in tqdm(locations, desc='Fetching forecasts', unit='location'):
+for location in tqdm(locations[:2], desc='Fetching forecasts', unit='location'):
     location_id, latitude, longitude = location
     forecast_data = get_forecast_data(latitude, longitude, api_key)
 
@@ -132,15 +179,13 @@ for location in tqdm(locations, desc='Fetching forecasts', unit='location'):
     else:
         print(f'Process forecast data failed at {location}.')
 
+
 if all_forecasts:
-    bulk_upsert_forecasts(db_conn_params, upsert_data)
+    bulk_upsert_forecasts(db_conn_params, all_forecasts)
     print(f'Forecast data successfully upserted.')
 else:
     print(f'Forecast data not upserted.')
 
-
-'''
-TODO: Remove rain and snow from main bulk upsert and create separate functions for bulk upsert of rain and snow.
-Retrieve ForecastID based on LocationID and TimestampISO and use to insert into Rain and Snow tables.
-Insert into Rain and Snow tables should be separate from main bulk upsert to avoid duplicate entries in Forecast table.
-'''
+#Retrieve ForecastID based on LocationID and TimestampISO and use to insert into Rain and Snow tables.
+forecast_ids = get_forecast_ids(db_conn_params, all_forecasts)
+bulk_upsert_rain_snow(db_conn_params, forecast_ids, all_forecasts)
