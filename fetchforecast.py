@@ -6,6 +6,9 @@ import psycopg2.extras
 import time
 from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor
+import aiohttp
+import asyncio
+from tqdm.asyncio import tqdm as async_tqdm
 
 # OpenWeatherMap API key
 api_key = os.environ.get('OPENWEATHER_API_KEY')
@@ -34,15 +37,31 @@ def get_locations(db_conn_params):
 
 
 #fetch forecast data from OpenWeatherMap API
-def get_forecast_data(location, api_key=api_key):
+
+async def get_forecast_data(session, location, api_key):
     location_id, latitude, longitude = location
-    url = f'https://api.openweathermap.org/data/2.5/forecast?lat={latitude}&lon={longitude}&appid={api_key}&units=imperial'
-    response = requests.get(url)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        print(f'Error fetching forecast data for {location_id}: {response.status_code}')
-        return None
+    url = f"https://api.openweathermap.org/data/2.5/forecast?lat={latitude}&lon={longitude}&appid={api_key}&units=imperial"
+    
+    async with session.get(url) as response:
+        if response.status == 200:
+            return await response.json()
+        else:
+            print(f"Error fetching forecast data for {location_id}: {response.status}")
+            return None
+
+async def main(api_key, locations):
+    async with aiohttp.ClientSession() as session:
+        tasks = []
+        for location in locations:
+            task = asyncio.ensure_future(get_forecast_data(session, location, api_key))
+            tasks.append(task)
+        
+        forecast_data_list = []
+        for task in async_tqdm(asyncio.as_completed(tasks), total=len(tasks), desc='Fetching forecast data', unit='location'):
+            data = await task
+            forecast_data_list.append(data)
+
+        return forecast_data_list
 
 
 #process forecast data from json response into list of tuples for bulk upsert
@@ -176,10 +195,15 @@ def bulk_upsert_rain_snow(db_conn_params, forecast_ids, forecast_data):
 locations = get_locations(db_conn_params)
 all_forecasts = []
 
-# Fetch forecast data for all locations in parallel
-with ThreadPoolExecutor() as executor:
-    forecast_data = list(tqdm(executor.map(get_forecast_data, locations), 
-                              total=len(locations), desc='Fetching forecast data', unit='location'))
+
+# Run the event loop
+loop = asyncio.get_event_loop()
+forecast_data = loop.run_until_complete(main(api_key, locations))
+
+# # Fetch forecast data for all locations in parallel
+# with ThreadPoolExecutor() as executor:
+#     forecast_data = list(tqdm(executor.map(get_forecast_data, locations), 
+#                               total=len(locations), desc='Fetching forecast data', unit='location'))
 
 
 
