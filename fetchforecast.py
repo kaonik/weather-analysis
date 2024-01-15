@@ -190,42 +190,44 @@ def bulk_upsert_rain_snow(db_conn_params, forecast_ids, forecast_data):
         cursor.close()
         conn.close()
 
-locations = get_locations(db_conn_params)
-all_forecasts = []
+
+if __name__ == '__main__':
+    locations = get_locations(db_conn_params)
+    all_forecasts = []
 
 
-# Run the event loop
-loop = asyncio.get_event_loop()
-forecast_data = loop.run_until_complete(main(api_key, locations))
+    # Run the event loop
+    loop = asyncio.get_event_loop()
+    forecast_data = loop.run_until_complete(main(api_key, locations))
+
+
+
+    # Iterate over locations and forecast data
+    for location, forecast_data in zip(locations, forecast_data):
+        location_id, latitude, longitude = location
+        
+        # Check if forecast data exists for location before processing
+        if forecast_data and 'list' in forecast_data:
+            # Process forecast data
+            processed_data = extract_forecast_data(forecast_data['list'])
+            upsert_data = [(location_id, *entry) for entry in processed_data]
+            all_forecasts.extend(upsert_data)
+        else:
+            print(f'Process forecast data failed at {location}.')
+
+
+
+    if all_forecasts:
+        bulk_upsert_forecasts(db_conn_params, all_forecasts)
+        print(f'Forecast data successfully upserted.')
+    else:
+        print(f'Forecast data not upserted.')
+
+    #Retrieve ForecastID based on LocationID and TimestampISO and use to insert into Rain and Snow tables.
+    forecast_ids = get_forecast_ids(db_conn_params, all_forecasts)
+    bulk_upsert_rain_snow(db_conn_params, forecast_ids, all_forecasts)
 
 # # Fetch forecast data for all locations in parallel
 # with ThreadPoolExecutor() as executor:
 #     forecast_data = list(tqdm(executor.map(get_forecast_data, locations), 
 #                               total=len(locations), desc='Fetching forecast data', unit='location'))
-
-
-
-# Iterate over locations and forecast data
-for location, forecast_data in zip(locations, forecast_data):
-    location_id, latitude, longitude = location
-    
-    # Check if forecast data exists for location before processing
-    if forecast_data and 'list' in forecast_data:
-        # Process forecast data
-        processed_data = extract_forecast_data(forecast_data['list'])
-        upsert_data = [(location_id, *entry) for entry in processed_data]
-        all_forecasts.extend(upsert_data)
-    else:
-        print(f'Process forecast data failed at {location}.')
-
-
-
-if all_forecasts:
-    bulk_upsert_forecasts(db_conn_params, all_forecasts)
-    print(f'Forecast data successfully upserted.')
-else:
-    print(f'Forecast data not upserted.')
-
-#Retrieve ForecastID based on LocationID and TimestampISO and use to insert into Rain and Snow tables.
-forecast_ids = get_forecast_ids(db_conn_params, all_forecasts)
-bulk_upsert_rain_snow(db_conn_params, forecast_ids, all_forecasts)
