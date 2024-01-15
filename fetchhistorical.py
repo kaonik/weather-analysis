@@ -52,8 +52,10 @@ async def get_historical_data(session, location, api_key=api_key):
 
     #Subtract 1 day from end
     end = datetime.datetime.utcfromtimestamp(end) - datetime.timedelta(days=1)
+
+    limit = 50000//len(locations)
     #Subtract 31 weeks from end - 50k limit on API calls, 1593 locations * 31 weeks = 49383
-    start = end - datetime.timedelta(weeks=1)
+    start = end - datetime.timedelta(weeks=limit)
     
     #Convert to unix timestamp
     start = int(start.timestamp())
@@ -167,9 +169,9 @@ def extract_forecast_data(forecast_list):
 
 locations = get_locations_time(db_conn_params)
 
-
+batch_size = len(locations)
 loop = asyncio.get_event_loop()
-loop.run_until_complete(main(api_key, locations))
+loop.run_until_complete(main(api_key, locations, batch_size=batch_size))
 
 
 
