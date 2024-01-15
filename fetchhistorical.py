@@ -65,6 +65,10 @@ async def get_historical_data(session, location, api_key=api_key):
     async with session.get(url) as response:
         if response.status == 200:
             return await response.json()
+        elif response.status == 404:
+            print(f"No data for location {location_id}. Marking as unavailable.")
+            mark_data_available_false(db_conn_params, location_id)
+            return None
         else:
             print(f"Error fetching forecast data for {location_id}: {response.status}")
             return None
