@@ -23,7 +23,7 @@ def bulk_insert_locations(db_conn_params,locations):
         #Use execute_values for bulk insert
         psycopg2.extras.execute_values(
             cursor,
-            "INSERT INTO Location (Latitude, Longitude) VALUES %s;",
+            "INSERT INTO Location (Latitude, Longitude) VALUES %s ON CONFLICT (Latitude, Longitude) DO NOTHING;",
             locations,
             template=None,
             page_size=100
