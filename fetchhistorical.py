@@ -32,6 +32,7 @@ def get_locations_time(db_conn_params):
                     SELECT l.locationid, l.latitude, l.longitude, MIN(f.timestampiso)
                     FROM location l
                     JOIN forecast f ON l.locationid = f.locationid
+                    WHERE l.data_available = TRUE
                     GROUP BY l.locationid, l.latitude, l.longitude
                 """)
                 results = cur.fetchall()
@@ -59,9 +60,7 @@ async def get_historical_data(session, location, api_key=api_key):
     end = int(end.timestamp())
     
     url = f"https://history.openweathermap.org/data/2.5/history/city?lat={latitude}&lon={longitude}&type=hour&start={start}&end={end}&appid={api_key}&units=imperial"
-    print(url)
-    print(location_id, latitude, longitude, start, end)
-    #TODO: Add error handling for 404 and set historical data availability to false
+
     async with session.get(url) as response:
         if response.status == 200:
             return await response.json()
@@ -88,7 +87,7 @@ def mark_data_available_false(db_conn_params, location_id):
         print(f"Error updating location availability: {error}")
         
 
-async def main(api_key, locations, batch_size=10):
+async def main(api_key, locations, batch_size=100):
     async with aiohttp.ClientSession() as session:
         # Split locations into batches
         batches = [locations[i:i + batch_size] for i in range(0, len(locations), batch_size)]
@@ -167,11 +166,10 @@ def extract_forecast_data(forecast_list):
 
 
 locations = get_locations_time(db_conn_params)
-#Limit location to 1 for testing
-testlocation = locations[:10]
+
 
 loop = asyncio.get_event_loop()
-loop.run_until_complete(main(api_key, testlocation))
+loop.run_until_complete(main(api_key, locations))
 
 
 
