@@ -67,6 +67,10 @@ create table Snow (
 ALTER TABLE location
 ADD COLUMN data_available BOOLEAN DEFAULT TRUE;
 
+ALTER TABLE Location
+ADD CONSTRAINT unique_lat_long UNIQUE (Latitude, Longitude);
+
+
 '''
 
 # Execute the SQL statements
