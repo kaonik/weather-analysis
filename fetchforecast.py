@@ -79,7 +79,6 @@ def extract_forecast_data(forecast_list):
         cloudiness = entry['clouds']['all']
         wind_speed = entry['wind']['speed']
         wind_direction = entry['wind'].get('deg')
-        wind_gust = entry['wind'].get('gust')
         visibility = entry.get('visibility')
         pop = entry.get('pop')
         
@@ -90,7 +89,7 @@ def extract_forecast_data(forecast_list):
 
         extracted_data.append((temp, pressure, sea_level, grnd_level, humidity,
                                weather_condition_id,
-                               cloudiness, wind_speed, wind_direction, wind_gust,
+                               cloudiness, wind_speed, wind_direction,
                                visibility, pop, dt_txt, rain, snow))
     return extracted_data
 
@@ -105,7 +104,7 @@ def bulk_upsert_forecasts(db_conn_params, forecast_records):
     upsert_query = """
     INSERT INTO Forecast (LocationID, Temperature, Pressure, SeaLevelPressure, GroundLevelPressure, Humidity,
                           WeatherConditionID, Cloudiness, WindSpeed, WindDirection,
-                          WindGust, Visibility, PrecipitationChance, TimestampISO)
+                            Visibility, PrecipitationChance, TimestampISO)
     VALUES %s
     ON CONFLICT (LocationID, TimestampISO)
     DO UPDATE SET
@@ -118,7 +117,6 @@ def bulk_upsert_forecasts(db_conn_params, forecast_records):
         Cloudiness = EXCLUDED.Cloudiness,
         WindSpeed = EXCLUDED.WindSpeed,
         WindDirection = EXCLUDED.WindDirection,
-        WindGust = EXCLUDED.WindGust,
         Visibility = EXCLUDED.Visibility,
         PrecipitationChance = EXCLUDED.PrecipitationChance;
     """
