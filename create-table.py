@@ -46,7 +46,6 @@ create table Forecast (
     Cloudiness int,
     WindSpeed float,
     WindDirection int,
-    WindGust float,
     Visibility int,
     PrecipitationChance float,
     TimestampISO timestamp,
