@@ -63,6 +63,10 @@ create table Snow (
     ForecastID int references Forecast(ForecastID),
     Volume3h float
 );
+
+ALTER TABLE location
+ADD COLUMN data_available BOOLEAN DEFAULT TRUE;
+
 '''
 
 # Execute the SQL statements
