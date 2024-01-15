@@ -66,7 +66,7 @@ async def get_historical_data(session, location, api_key=api_key):
     async with session.get(url) as response:
         if response.status == 200:
             return await response.json()
-        elif response.status == 404:
+        elif response.status == 404 or response.status == 400: #No data for location or out of allowed range (1 year)
             print(f"No data for location {location_id}. Marking as unavailable.")
             mark_data_available_false(db_conn_params, location_id)
             return None
