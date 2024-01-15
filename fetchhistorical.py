@@ -54,7 +54,7 @@ async def get_historical_data(session, location, api_key=api_key):
     end = datetime.datetime.utcfromtimestamp(end) - datetime.timedelta(days=1)
 
     limit = 50000//len(locations)
-    #Subtract 31 weeks from end - 50k limit on API calls, 1593 locations * 31 weeks = 49383
+    #Subtract weeks from end - 50k limit on API calls
     start = end - datetime.timedelta(weeks=limit)
     
     #Convert to unix timestamp
