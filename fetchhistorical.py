@@ -89,7 +89,7 @@ def mark_data_available_false(db_conn_params, location_id):
         print(f"Error updating location availability: {error}")
         
 
-async def main(api_key, locations, batch_size=100):
+async def main(api_key, locations, batch_size=1000):
     async with aiohttp.ClientSession() as session:
         # Split locations into batches
         batches = [locations[i:i + batch_size] for i in range(0, len(locations), batch_size)]
@@ -168,10 +168,10 @@ def extract_forecast_data(forecast_list):
 
 
 locations = get_locations_time(db_conn_params)
-
-batch_size = len(locations)
+#Disabled as 65k locations added to database
+#batch_size = len(locations)
 loop = asyncio.get_event_loop()
-loop.run_until_complete(main(api_key, locations, batch_size=batch_size))
+loop.run_until_complete(main(api_key, locations))
 
 
 
