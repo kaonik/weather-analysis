@@ -46,5 +46,9 @@ db_conn_params = {
 }
 
 if __name__ == "__main__":
-    locations = create_location_points()
+    #Grid for world
+    locations = create_location_points(-90,90,-180,180)
+
+    #Grid for contiguous US
+    #locations = create_location_points() 
     bulk_insert_locations(db_conn_params,locations)
