@@ -3,7 +3,7 @@ from dash import dcc
 from dash import html
 from dash.dependencies import Input, Output
 import plotly.express as px
-import psycopg2
+from sqlalchemy import create_engine
 import os
 import pandas as pd
 
@@ -14,26 +14,27 @@ db_conn_params = {
     "host": os.getenv('DB_HOST')
 }
 
-# Fetch data from database
-def fetch_data(query,db_conn_params=db_conn_params):
-    with psycopg2.connect(**db_conn_params) as conn:
-        return pd.read_sql(query,conn)
+#Create SQLAlchemy engine
+engine = create_engine(f"postgresql://{db_conn_params['user']}:{db_conn_params['password']}@{db_conn_params['host']}/{db_conn_params['dbname']}")
 
 # Get latitude, longitude, and forecast data with locationid
 query ="""
     SELECT DATE(f.timestampiso) AS day,
-           AVG(f.temperature) AS avg_temperature,
-           AVG(f.humidity) AS avg_humidity,
-           AVG(f.windspeed) AS avg_wind_speed,
-           AVG(f.pressure) AS avg_pressure,
-           l.latitude, l.longitude
+    AVG(f.temperature) AS avg_temperature,
+    AVG(f.humidity) AS avg_humidity,
+    AVG(f.windspeed) AS avg_wind_speed,
+    AVG(f.pressure) AS avg_pressure,
+    AVG(f.cloudiness) AS avg_cloudiness,
+    AVG(f.visibility) AS avg_visibility,
+    AVG(f.precipitationchance) AS avg_precipitation_chance,
+    l.latitude, l.longitude
     FROM location l
     JOIN forecast f ON l.locationid = f.locationid
     GROUP BY day, l.latitude, l.longitude
     LIMIT 1000;
 """
-
-df = fetch_data(query)
+# Read query results into pandas dataframe
+df = pd.read_sql(query,engine)
 
 # Create plotly scatter mapbox figure
 fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", color="avg_temperature", color_continuous_scale=px.colors.cyclical.IceFire, size_max=15, zoom=3, hover_data=["day","avg_temperature","avg_humidity","avg_wind_speed","avg_pressure"])
