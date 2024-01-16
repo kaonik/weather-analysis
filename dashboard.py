@@ -24,7 +24,7 @@ query ="""
     SELECT l.*, f.*
     FROM location l
     JOIN forecast f ON l.locationid = f.locationid
-    LIMIT 10000;
+    LIMIT 1000;
                 """
 
 df = fetch_data(query)
@@ -39,7 +39,12 @@ app = dash.Dash(__name__)
 # Create app layout
 app.layout = html.Div([
     html.H1("Weather Dashboard"),
-    dcc.Graph(id="scatter-map", figure=fig)
+    dcc.Graph(
+        id="scatter-map", 
+        figure=fig,
+        # Autosize height
+        style={'height': '90vh'}
+        )
 ])
 
 # Run app
