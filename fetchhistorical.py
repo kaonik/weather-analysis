@@ -34,6 +34,7 @@ def get_locations_time(db_conn_params):
                     JOIN forecast f ON l.locationid = f.locationid
                     WHERE l.data_available = TRUE
                     GROUP BY l.locationid, l.latitude, l.longitude
+                    LIMIT 50000;
                 """)
                 results = cur.fetchall()
                 return results
@@ -70,6 +71,10 @@ async def get_historical_data(session, location, api_key=api_key):
             print(f"No data for location {location_id}. Marking as unavailable.")
             mark_data_available_false(db_conn_params, location_id)
             return None
+        elif response.status == 429: #Too many requests
+            print(f"Too many requests. Day or minute limit exceeded.")
+            #Abort program
+            exit()
         else:
             print(f"Error fetching forecast data for {location_id}: {response.status}")
             return None
