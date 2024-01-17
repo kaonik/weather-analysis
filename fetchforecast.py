@@ -53,9 +53,9 @@ async def get_forecast_data(session, location, api_key):
                 else:
                     print(f"Error fetching forecast data for {location_id}: {response.status}")
                     return None
-        except aiohttp.ServerDisconnectedError:
+        except:
             if attempt < max_retries - 1:
-                print(f"Server disconnected, retrying in {retry_delay} seconds.")
+                print(f"Server disconnected for Location{location_id}, retrying in {retry_delay} seconds.")
                 await asyncio.sleep(retry_delay)
             else:
                 print(f"Server disconnected, max retries exceeded.")
@@ -64,7 +64,7 @@ async def get_forecast_data(session, location, api_key):
 async def main(api_key, locations):
     async with aiohttp.ClientSession() as session:
         forecast_data_list = []
-        batch_size = 50
+        batch_size = 3000
         batches = [locations[i:i + batch_size] for i in range(0, len(locations), batch_size)]
 
         # Manual tqdm progress bar for total number of locations
@@ -79,8 +79,8 @@ async def main(api_key, locations):
                 forecast_data_list.append(data)
                 pbar.update(1) # Update progress bar
 
-            #Sleep for 1 second to avoid rate limit
-            await asyncio.sleep(1)
+            #Sleep for 60 seconds to avoid rate limit
+            await asyncio.sleep(60)
         
         pbar.close()
 
