@@ -33,8 +33,8 @@ query ="""
     l.latitude, l.longitude
     FROM location l
     JOIN forecast f ON l.locationid = f.locationid
-    GROUP BY date, l.latitude, l.longitude
-    LIMIT 10000;
+    WHERE EXTRACT(HOUR FROM f.timestampiso) = 12 and DATE(f.timestampiso) = '2024-01-16'
+    GROUP BY date, l.latitude, l.longitude;
 """
 # Read query results into pandas dataframe
 df = pd.read_sql(query,engine)
@@ -46,10 +46,11 @@ fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", color="avg_temperat
 fig.update_layout(
     mapbox=dict(
         accesstoken=os.environ.get('MAPBOX_API_KEY'),
-        style="streets"
+        style="streets",
+        # Set map bounds to the world bounds to prevent zooming out past world bounds
+        bounds = {"west": -180, "east": 180, "south": -90, "north": 90}
     )
 )
-
 # Create dash app
 app = dash.Dash(__name__)
 
