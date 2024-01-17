@@ -55,16 +55,22 @@ async def main(api_key, locations):
         batch_size = 50
         batches = [locations[i:i + batch_size] for i in range(0, len(locations), batch_size)]
 
+        # Manual tqdm progress bar for total number of locations
+        pbar = async_tqdm(total=len(locations), desc='Fetching forecast data', unit='location')
+
         for batch in batches:
             tasks = [asyncio.ensure_future(get_forecast_data(session, location, api_key)) for location in batch]
             
             # Wait for all tasks in batch to complete
-            for task in async_tqdm(asyncio.as_completed(tasks), total=len(tasks), desc='Fetching forecast data', unit='location'):
+            for task in asyncio.as_completed(tasks):
                 data = await task
                 forecast_data_list.append(data)
+                pbar.update(1) # Update progress bar
 
             #Sleep for 1 second to avoid rate limit
             await asyncio.sleep(1)
+        
+        pbar.close()
 
         return forecast_data_list
 
