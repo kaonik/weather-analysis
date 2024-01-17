@@ -64,7 +64,7 @@ async def main(api_key, locations):
                 forecast_data_list.append(data)
 
             #Sleep for 1 second to avoid rate limit
-                await asyncio.sleep(1)
+            await asyncio.sleep(1)
 
         return forecast_data_list
 
