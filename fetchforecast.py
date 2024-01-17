@@ -51,15 +51,20 @@ async def get_forecast_data(session, location, api_key):
 
 async def main(api_key, locations):
     async with aiohttp.ClientSession() as session:
-        tasks = []
-        for location in locations:
-            task = asyncio.ensure_future(get_forecast_data(session, location, api_key))
-            tasks.append(task)
-        
         forecast_data_list = []
-        for task in async_tqdm(asyncio.as_completed(tasks), total=len(tasks), desc='Fetching forecast data', unit='location'):
-            data = await task
-            forecast_data_list.append(data)
+        batch_size = 50
+        batches = [locations[i:i + batch_size] for i in range(0, len(locations), batch_size)]
+
+        for batch in batches:
+            tasks = [asyncio.ensure_future(get_forecast_data(session, location, api_key)) for location in batch]
+            
+            # Wait for all tasks in batch to complete
+            for task in async_tqdm(asyncio.as_completed(tasks), total=len(tasks), desc='Fetching forecast data', unit='location'):
+                data = await task
+                forecast_data_list.append(data)
+
+            #Sleep for 1 second to avoid rate limit
+                await asyncio.sleep(1)
 
         return forecast_data_list
 
