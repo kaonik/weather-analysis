@@ -42,12 +42,24 @@ async def get_forecast_data(session, location, api_key):
     location_id, latitude, longitude = location
     url = f"https://api.openweathermap.org/data/2.5/forecast?lat={latitude}&lon={longitude}&appid={api_key}&units=imperial"
     
-    async with session.get(url) as response:
-        if response.status == 200:
-            return await response.json()
-        else:
-            print(f"Error fetching forecast data for {location_id}: {response.status}")
-            return None
+    max_retries = 3
+    retry_delay = 3
+
+    for attempt in range(max_retries):
+        try:
+            async with session.get(url) as response:
+                if response.status == 200:
+                    return await response.json()
+                else:
+                    print(f"Error fetching forecast data for {location_id}: {response.status}")
+                    return None
+        except aiohttp.ServerDisconnectedError:
+            if attempt < max_retries - 1:
+                print(f"Server disconnected, retrying in {retry_delay} seconds.")
+                await asyncio.sleep(retry_delay)
+            else:
+                print(f"Server disconnected, max retries exceeded.")
+                return None
 
 async def main(api_key, locations):
     async with aiohttp.ClientSession() as session:
