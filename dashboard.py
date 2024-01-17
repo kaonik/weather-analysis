@@ -14,12 +14,15 @@ db_conn_params = {
     "host": os.getenv('DB_HOST')
 }
 
+#Mapbox access token
+px.set_mapbox_access_token(os.environ.get('MAPBOX_API_KEY'))
+
 #Create SQLAlchemy engine
 engine = create_engine(f"postgresql://{db_conn_params['user']}:{db_conn_params['password']}@{db_conn_params['host']}/{db_conn_params['dbname']}")
 
 # Get latitude, longitude, and forecast data with locationid
 query ="""
-    SELECT DATE(f.timestampiso) AS day,
+    SELECT DATE(f.timestampiso) AS date,
     AVG(f.temperature) AS avg_temperature,
     AVG(f.humidity) AS avg_humidity,
     AVG(f.windspeed) AS avg_wind_speed,
@@ -30,15 +33,22 @@ query ="""
     l.latitude, l.longitude
     FROM location l
     JOIN forecast f ON l.locationid = f.locationid
-    GROUP BY day, l.latitude, l.longitude
-    LIMIT 1000;
+    GROUP BY date, l.latitude, l.longitude
+    LIMIT 10000;
 """
 # Read query results into pandas dataframe
 df = pd.read_sql(query,engine)
 
 # Create plotly scatter mapbox figure
-fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", color="avg_temperature", color_continuous_scale=px.colors.cyclical.IceFire, size_max=15, zoom=3, hover_data=["day","avg_temperature","avg_humidity","avg_wind_speed","avg_pressure"])
-fig.update_layout(mapbox_style="open-street-map")
+fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", color="avg_temperature", color_continuous_scale=px.colors.cyclical.IceFire, size_max=15, zoom=3, hover_data=["date","avg_temperature","avg_humidity","avg_wind_speed","avg_pressure"])
+
+# Set Mapbox access token
+fig.update_layout(
+    mapbox=dict(
+        accesstoken=os.environ.get('MAPBOX_API_KEY'),
+        style="streets"
+    )
+)
 
 # Create dash app
 app = dash.Dash(__name__)
@@ -51,7 +61,7 @@ app.layout = html.Div([
         figure=fig,
         # Autosize height
         style={'height': '90vh'}
-        )
+    )
 ])
 
 # Run app
