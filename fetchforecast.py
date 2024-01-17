@@ -71,6 +71,9 @@ async def main(api_key, locations):
         pbar = async_tqdm(total=len(locations), desc='Fetching forecast data', unit='location')
 
         for batch in batches:
+            start_time = time.time() # Start timer for batch
+
+            # Create tasks for each location in batch
             tasks = [asyncio.ensure_future(get_forecast_data(session, location, api_key)) for location in batch]
             
             # Wait for all tasks in batch to complete
@@ -79,8 +82,15 @@ async def main(api_key, locations):
                 forecast_data_list.append(data)
                 pbar.update(1) # Update progress bar
 
-            #Sleep for 60 seconds to avoid rate limit
-            await asyncio.sleep(60)
+            # Calculate time elapsed for batch
+            elapsed_time = time.time() - start_time
+
+            # Calculate time to sleep to avoid rate limit, ensure not negative
+            sleep_time = max(60 - elapsed_time, 0)
+
+            if sleep_time > 0:
+                print(f"Sleeping for {sleep_time} seconds to avoid rate limit.")
+                await asyncio.sleep(sleep_time)
         
         pbar.close()
 
