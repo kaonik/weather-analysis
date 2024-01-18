@@ -86,7 +86,7 @@ async def get_historical_data(session, location, api_key=api_key):
                 return None
             
         #Update end to start of previous week
-        end = start
+        end = datetime.datetime.utcfromtimestamp(start)
 
     return all_data
         
@@ -105,7 +105,7 @@ def mark_data_available_false(db_conn_params, location_id):
         print(f"Error updating location availability: {error}")
         
 
-async def main(api_key, locations, batch_size=100):
+async def main(api_key, locations, batch_size=10000):
     async with aiohttp.ClientSession() as session:
         # Split locations into batches
         batches = [locations[i:i + batch_size] for i in range(0, len(locations), batch_size)]
@@ -120,7 +120,7 @@ async def main(api_key, locations, batch_size=100):
             for task in async_tqdm(asyncio.as_completed(tasks), total=len(batch), desc='Fetching historical data', unit='location'):
                 data = await task
                 if data is not None:
-                    forecast_data_list.append(data)
+                    forecast_data_list.extend(data)
 
             all_forecasts = []
             # Process and upsert the data for each batch
