@@ -48,11 +48,8 @@ def get_locations_time(db_conn_params):
 async def get_historical_data(session, location, api_key=api_key):
     location_id, latitude, longitude, end = location
 
-    #Convert to unix timestamp
-    end = int(end.timestamp())
-
-    #Subtract 1 day from end
-    end = datetime.datetime.utcfromtimestamp(end) - datetime.timedelta(days=1)
+    # Convert to unix timestamp and subtract 1 day from end
+    end = datetime.datetime.utcfromtimestamp(int(end.timestamp())) - datetime.timedelta(days=1)
 
     limit = 50000//len(locations)
     all_data = []
@@ -64,10 +61,10 @@ async def get_historical_data(session, location, api_key=api_key):
         start = end - datetime.timedelta(weeks=1)
 
         #Convert to unix timestamp
-        start = int(start.timestamp())
-        end = int(end.timestamp())
+        start_ts = int(start.timestamp())
+        end_ts = int(end.timestamp())
         
-        url = f"https://history.openweathermap.org/data/2.5/history/city?lat={latitude}&lon={longitude}&type=hour&start={start}&end={end}&appid={api_key}&units=imperial"
+        url = f"https://history.openweathermap.org/data/2.5/history/city?lat={latitude}&lon={longitude}&type=hour&start={start_ts}&end={end_ts}&appid={api_key}&units=imperial"
     
         async with session.get(url) as response:
             if response.status == 200:
@@ -86,7 +83,7 @@ async def get_historical_data(session, location, api_key=api_key):
                 return None
             
         #Update end to start of previous week
-        end = datetime.datetime.utcfromtimestamp(start)
+        end = start
 
     return all_data
         
@@ -105,7 +102,7 @@ def mark_data_available_false(db_conn_params, location_id):
         print(f"Error updating location availability: {error}")
         
 
-async def main(api_key, locations, batch_size=10000):
+async def main(api_key, locations, batch_size=1000):
     async with aiohttp.ClientSession() as session:
         # Split locations into batches
         batches = [locations[i:i + batch_size] for i in range(0, len(locations), batch_size)]
